@@ -1,0 +1,57 @@
+{
+  "$id": "",
+  "$schema": "http://schema.pennsieve.net/model/draft-01/schema",
+  "name": "Sample Protocol",
+  "description": "Sample protocol based on the Nature Protocols schema.",
+  "properties": {
+    "abstract": {
+      "type": "string",
+      "description": "Please provide a brief description of the protocol."
+    },
+    "introduction": {
+      "type": "string",
+      "description": "Discuss the methods used in the protocol and the limitations."
+    },
+    "materials": {
+      "type": "string",
+      "description": "Please list every reagent and piece of equipment."
+    },
+    "procedure": {
+      "type": "string",
+      "description": "Provided as a numbered list of direct experimental instructions."
+    },
+    "timing": {
+      "type": "string",
+      "description": "please include a timeline indicating the approximate time each step or stage will take."
+    },
+    "troubleshooting": {
+      "type": "string",
+      "description": "Please include information on how to troubleshoot the most likely problems users will encounter with the protocol."
+    },
+    "anticipated results": {
+      "type": "string",
+      "description": "Please include information about the likely outcome of protocol"
+    },
+    "cfi": {
+      "type": "string",
+      "description": "Provide Conflict of Interest"
+    },
+    "acknowledgements": {
+      "type": "string",
+      "description": "Please note an acknowledgments section can be included."
+    },
+    "contribution statement": {
+      "type": "string",
+      "description": "Include a statement of responsibility in the manuscript that specifies the contribution of every author."
+    },
+    "supplementary information": {
+      "type": "string",
+      "description": "Provide other information related to the protocol."
+    }
+  },
+  "required": [
+    "abstract",
+    "introduction",
+    "procedure"
+  ]
+}

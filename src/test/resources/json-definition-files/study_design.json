@@ -1,0 +1,29 @@
+{
+  "$schema": "http://schema.pennsieve.net/model/draft-01/schema",
+  "name": "Study Design",
+  "description": "This model defines a Study Design",
+  "category": "Protocol",
+  "properties": {
+    "Randomization and blinding procedures": {
+      "type": "string",
+      "description": "Description of Randomization and blinding procedures"
+    },
+    "Inclusion/exclusion criteria": {
+      "type": "string",
+      "description": "Description of Inclusion/exclusion criteria"
+    },
+    "Groups and group size": {
+      "type": "string",
+      "description": "Description of group and group size"
+    },
+    "Rationale for exclusion decision": {
+      "type": "string",
+      "description": "Describe rationale for excluding subject from final analysis"
+    }
+  },
+  "required": [
+    "Randomization and blinding procedures",
+    "Inclusion/exclusion criteria",
+    "Groups and group size"
+  ]
+}

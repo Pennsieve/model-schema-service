@@ -1,0 +1,219 @@
+{
+  "$id": "http://schema.pennsieve.net/model/draft-01/schema",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$comment": "This schema can be used to validate model templates for the Pennsieve platform.",
+  "title": "Pennsieve Model Template Schema",
+  "definitions": {
+    "schemaArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#"
+      }
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "branchArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/branch"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "branch": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "const": "BIOPORTAL"
+        },
+        "acronym": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "maxDepth": {
+          "$ref": "#/definitions/nonNegativeInteger"
+        }
+      },
+      "additionalProperties": false
+    },
+    "simpleTypes": {
+      "enum": [
+        "array",
+        "boolean",
+        "integer",
+        "null",
+        "number",
+        "object",
+        "string"
+      ]
+    },
+    "arrayValueTypes": {
+      "enum": [
+        "integer",
+        "number",
+        "string"
+      ]
+    },
+    "itemSelector": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "enums": {
+      "type": "array",
+      "$comment": "Define a fixed array of valid values for the property",
+      "items": {
+        "$ref": "#/definitions/itemSelector"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "arrayItems": {
+      "oneOf": [
+        {
+          "properties": {
+            "type": {
+              "$ref": "#/definitions/arrayValueTypes"
+            },
+            "enum": {
+              "$ref": "#/definitions/enums"
+            }
+          },
+          "required": [
+            "type",
+            "enum"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "string"
+            },
+            "branches": {
+              "$comment": "Link value options to one or more branches of a published ontology",
+              "$ref": "#/definitions/branchArray"
+            }
+          },
+          "required": [
+            "type",
+            "branches"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "schemaProps": {
+      "$comment": "SchemaProps define how to provide the requirements for properties defined in the template",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/simpleTypes"
+        },
+        "unit": {
+          "type": "string",
+          "$comment": "Provide a unit for the property value",
+          "maxLength": 10
+        },
+        "enum": {
+          "$ref": "#/definitions/enums"
+        },
+        "branches": {
+          "$ref": "#/definitions/branchArray"
+        },
+        "description": {
+          "type": "string",
+          "$comment": "Provide a description for a property of the model template",
+          "maxLength": 200
+        },
+        "items": {
+          "$ref": "#/definitions/arrayItems"
+        },
+        "format": {
+          "type": "string",
+          "$comment": "If type is string, you can provide the format to specify date, email, or uri",
+          "enum": [
+            "date-time",
+            "date",
+            "time",
+            "email",
+            "uri"
+          ]
+        },
+        "default": true,
+        "additionalProperties": false
+      },
+      "required": [
+        "type",
+        "description"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "$id": {
+      "type": "string",
+      "$comment": "This can be left blank and will be assigned by the Pennsieve platform"
+    },
+    "$schema": {
+      "const": "http://schema.pennsieve.net/model/draft-01/schema",
+      "$comment": "This identifies this document as an record of the Pennsieve model template"
+    },
+    "name": {
+      "type": "string",
+      "$comment": "This should be the name of the model that you provide a template for"
+    },
+    "description": {
+      "type": "string",
+      "$comment": "This is a description of the model",
+      "maxLength": 200
+    },
+    "category": {
+      "type": "string",
+      "$comment": "Identifies the category of the model, which is used to group models on the platform",
+      "maxLength": 50
+    },
+    "properties": {
+      "type": "object",
+      "$comment": "Here, the properties of the model template are defined",
+      "additionalProperties": {
+        "$ref": "#/definitions/schemaProps"
+      },
+      "default": {}
+    },
+    "required": {
+      "$ref": "#/definitions/stringArray"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "$schema",
+    "properties",
+    "required",
+    "description"
+  ]
+}

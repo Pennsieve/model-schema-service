@@ -1,0 +1,852 @@
+swagger: '2.0'
+info:
+  version: 0.1.0
+  title: 'Model Schema Service'
+host: 0.0.0.0:8080
+schemes:
+  - http
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+
+paths:
+  /health:
+    get:
+      security: []
+      summary: Healthcheck
+      operationId: healthcheck
+      x-scala-package: healthcheck
+      description: Ensure the service is responding to requests.
+      responses:
+        '200':
+          description: Success
+
+  /validate:
+    parameters:
+      - in: body
+        name: templateSchema
+        description: Request to create a new schema
+        required: true
+        schema:
+          $ref: '#/definitions/CreateSchemaRequest'
+    post:
+      security: []
+      summary: Validate a template
+      operationId: validateTemplate
+      x-scala-package: validate
+      description: >
+        Ensure that a template's JSON structure is valid.
+      responses:
+        '200':
+          description: Template is valid
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+        '400':
+          description: Template is invalid
+          schema:
+            $ref: '#/definitions/ValidationBadRequest'
+
+  /organizations/{organizationId}/templates:
+    get:
+      security:
+        - Bearer: []
+      summary: Get schemas
+      description: Get all schemas for organization.
+      operationId: getSchemasForOrganization
+      x-scala-package: templates
+      produces:
+        - application/json
+      parameters:
+        - name: organizationId
+          in: path
+          description: 'Organization ID'
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/TemplateSchemas'
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+    post:
+      security:
+        - Bearer: []
+      summary: Create a new template
+      operationId: createTemplate
+      x-scala-package: templates
+      description: >
+        Create a new schema for this organization in the model
+        templates service.
+        <br><br>
+        This does not create a model in the `ModelService`, but rather
+        it stores the model template in the underlying postgres
+        database.
+      parameters:
+        - name: organizationId
+          in: path
+          description: 'Organization ID'
+          required: true
+          type: integer
+          format: int32
+        - name: template
+          in: body
+          description: Template to create
+          required: true
+          schema:
+            $ref: '#/definitions/CreateSchemaRequest'
+      responses:
+        '201':
+          description: Successfully created
+          schema:
+            $ref: '#/definitions/TemplateSchemaRecord'
+        '400':
+          description: Invalid schema id
+          schema:
+            $ref: '#/definitions/ValidationBadRequest'
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+
+  /organizations/{organizationId}/templates/{templateId}:
+    parameters:
+      - name: organizationId
+        in: path
+        description: 'Organization ID'
+        required: true
+        type: integer
+        format: int32
+      - in: path
+        name: templateId
+        description: Template ID
+        required: true
+        type: string
+    get:
+      security:
+        - Bearer: []
+      summary: Get schema
+      operationId: getSchema
+      x-scala-package: templates
+      description: Get a specific schema by id
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/TemplateSchema'
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+        '404':
+          description: Template could not be found
+          schema:
+            type: string
+    delete:
+      security:
+        - Bearer: []
+      summary: Delete schema
+      operationId: deleteSchema
+      x-scala-package: templates
+      description: Delete a specific schema by id
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: string
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+        '404':
+          description: Template could not be found
+          schema:
+            type: string
+
+  /organizations/{organizationId}/templates/{templateId}/datasets/{datasetId}:
+    parameters:
+      - in: path
+        name: organizationId
+        description: Organization ID
+        required: true
+        type: integer
+        format: int32
+      - in: path
+        name: templateId
+        description: Template ID
+        required: true
+        type: string
+      - in: path
+        name: datasetId
+        description: Dataset ID
+        required: true
+        type: integer
+        format: int32
+    post:
+      security:
+        - Bearer: []
+      parameters:
+        - name: X-Bf-Trace-Id
+          in: header
+          type: string
+          required: true
+      summary: Apply a template to a dataset
+      operationId: applyTemplateToDataset
+      x-scala-package: templates
+      description: >
+        Create a new template in the `ModelService` that is associated
+        with the given `datasetId`.
+        <br><br>
+        This template will be validated by the `ModelService` and potentially
+        rejected if it does not meet certain requirements.
+      responses:
+        '201':
+          description: Successfully created
+          schema:
+            $ref: '#/definitions/SchemaPropertyResponses'
+        '400':
+          description: Template was rejected by the model service
+          schema:
+            $ref: '#/definitions/ModelServiceBadRequest'
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+        '404':
+          description: Template could not be found
+          schema:
+            type: string
+        '500':
+          description: Error communicating with the model service
+          schema:
+            type: string
+
+  /organizations/{organizationId}/datasets/{datasetId}/models/{modelId}:
+    parameters:
+      - in: path
+        name: organizationId
+        description: Organization ID
+        required: true
+        type: integer
+        format: int32
+      - in: path
+        name: datasetId
+        description: Dataset ID
+        required: true
+        type: integer
+        format: int32
+      - in: path
+        name: modelId
+        description: Model ID
+        required: true
+        type: string
+    post:
+      security:
+        - Bearer: []
+      parameters:
+        - name: X-Bf-Trace-Id
+          in: header
+          type: string
+          required: true
+      summary: Create a template from a model in the model service
+      operationId: createTemplateFromModel
+      x-scala-package: templates
+      description: >
+        Create a new template based on a model in the `ModelService`.
+      responses:
+        '201':
+          description: Successfully created
+          schema:
+            $ref: '#/definitions/TemplateSchemaRecord'
+        '400':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ModelServiceBadRequest'
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+        '404':
+          description: Template could not be found in the model service
+          schema:
+            type: string
+        '500':
+          description: Error communicating with the model service
+          schema:
+            type: string
+
+  /organizations/{organizationId}/dataset-templates:
+    get:
+      security:
+        - Bearer: []
+      summary: Get dataset templates
+      description: Get all dataset templates for organization.
+      operationId: getDatasetTemplatesForOrganization
+      x-scala-package: datasetTemplates
+      produces:
+        - application/json
+      parameters:
+        - name: X-Bf-Trace-Id
+          in: header
+          type: string
+          required: true
+        - name: organizationId
+          in: path
+          description: 'Organization ID'
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/DatasetTemplates'
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+
+  /organizations/{organizationId}/dataset-templates/{datasetTemplateId}:
+    parameters:
+      - name: X-Bf-Trace-Id
+        in: header
+        type: string
+        required: true
+      - name: organizationId
+        in: path
+        description: 'Organization ID'
+        required: true
+        type: integer
+        format: int32
+      - in: path
+        name: datasetTemplateId
+        description: Dataset Template ID
+        required: true
+        type: integer
+        format: int32
+    get:
+      security:
+        - Bearer: []
+      summary: Get dataset template
+      operationId: getDatasetTemplate
+      x-scala-package: datasetTemplates
+      description: Get a specific dataset template by id
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/DatasetTemplateSchema'
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+        '404':
+          description: Template could not be found
+          schema:
+            type: string
+    put:
+      security:
+        - Bearer: []
+      parameters:
+        - name: X-Bf-Trace-Id
+          in: header
+          type: string
+          required: true
+        - name: templateProperties
+          in: body
+          description: Template properties to update
+          required: true
+          schema:
+            $ref: '#/definitions/DatasetTemplateUpdateRequest'
+      summary: Update dataset template
+      operationId: updateDatasetTemplate
+      x-scala-package: datasetTemplates
+      description: Update the name/description of a specific dataset template
+      responses:
+        '201':
+          description: Success
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+        '404':
+          description: Template could not be found
+          schema:
+            type: string
+    delete:
+      security:
+        - Bearer: []
+      parameters:
+        - name: X-Bf-Trace-Id
+          in: header
+          type: string
+          required: true
+      summary: Delete dataset template
+      operationId: deleteDatasetTemplate
+      x-scala-package: datasetTemplates
+      description: Delete a specific dataset template by id
+      responses:
+        '200':
+          description: Success
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+        '404':
+          description: Template could not be found
+          schema:
+            type: string
+    post:
+      parameters:
+        - name: X-Bf-Trace-Id
+          in: header
+          type: string
+          required: true
+        - name: datasetProperties
+          in: body
+          description: Dataset properties
+          required: true
+          schema:
+            $ref: '#/definitions/DatasetCreateRequest'
+      security:
+        - Bearer: []
+      summary: Create a dataset based on a dataset template
+      operationId: createDatasetFromTemplate
+      x-scala-package: datasetTemplates
+      description: Create a dataset based on a dataset template
+      responses:
+        '201':
+          description: Success
+          schema:
+            type: object
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+        '404':
+          description: Template could not be found
+          schema:
+            type: string
+
+  /organizations/{organizationId}/datasets/{datasetId}/dataset-templates:
+    parameters:
+      - name: organizationId
+        in: path
+        description: 'Organization ID'
+        required: true
+        type: integer
+        format: int32
+      - in: path
+        name: datasetId
+        description: 'Dataset ID'
+        required: true
+        type: integer
+        format: int32
+      - name: templateProperties
+        in: body
+        description: Template properties
+        required: true
+        schema:
+          $ref: '#/definitions/DatasetTemplateCreateRequest'
+    post:
+      security:
+        - Bearer: []
+      parameters:
+        - name: X-Bf-Trace-Id
+          in: header
+          type: string
+          required: true
+      summary: Create a dataset template from a dataset
+      operationId: createTemplateFromDataset
+      x-scala-package: datasetTemplates
+      description: Create a dataset template from a dataset
+      responses:
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/DatasetTemplate'
+        '403':
+          description: Unauthorized
+          schema:
+            type: string
+        '404':
+          description: Dataset could not be found
+          schema:
+            type: string
+        '409':
+          description: Duplicate template name
+          schema:
+            $ref: '#/definitions/DuplicateDatasetTemplateName'
+
+definitions:
+
+  # --- errors ------------------------
+
+  ValidationBadRequest:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string
+      problems:
+        type: array
+        items:
+          type: string
+
+  ModelServiceBadRequest:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string
+      modelServiceError:
+        type: object
+
+  DuplicateDatasetTemplateName:
+    type: object
+    required:
+      - message
+      - name
+      - datasetId
+    properties:
+      message:
+        type: string
+      name:
+        type: string
+      datasetId:
+        type: integer
+        format: int32
+
+  # --- successes ---------------------
+
+  DatasetTemplates:
+    type: array
+    items:
+      $ref: '#/definitions/DatasetTemplate'
+
+  DatasetTemplate:
+    type: object
+    required:
+      - id
+      - organizationId
+      - datasetId
+      - name
+      - description
+    properties:
+      id:
+        type: integer
+        format: int32
+      organizationId:
+        type: integer
+        format: int32
+      datasetId:
+        type: integer
+        format: int32
+      name:
+        type: string
+      description:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      deleted:
+        type: boolean
+
+  DatasetTemplateSchema:
+    type: object
+    required:
+      - id
+      - name
+      - description
+      - models
+      - relationships
+      - linkedProperties
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      description:
+        type: string
+      models:
+        type: array
+        items:
+          $ref: '#/definitions/TemplateSchemaRecord'
+      relationships:
+        type: array
+        items:
+          $ref: '#/definitions/TemplateSchemaRelationship'
+      linkedProperties:
+        type: array
+        items:
+          $ref: '#/definitions/TemplateSchemaLinkedProperty'
+
+  TemplateSchemas:
+    type: array
+    items:
+      $ref: '#/definitions/TemplateSchema'
+
+  TemplateSchema:
+    type: object
+    required:
+      - $id
+      - $schema
+      - name
+      - displayName
+      - description
+      - properties
+      - required
+    properties:
+      $id:
+        type: string
+      $schema:
+        type: string
+      name:
+        type: string
+      displayName:
+        type: string
+      description:
+        type: string
+      category:
+        type: string
+      properties:
+        type: object
+      required:
+        type: array
+        items:
+          type: string
+      icon:
+        type: string
+
+  TemplateSchemaRecord:
+    type: object
+    required:
+      - $id
+      - $organizationId
+      - $schema
+      - name
+      - displayName
+      - description
+      - properties
+      - required
+      - createdAt
+    properties:
+      $id:
+        type: string
+      $organizationId:
+        type: integer
+        format: int32
+      $schema:
+        type: string
+      name:
+        type: string
+      displayName:
+        type: string
+      description:
+        type: string
+      category:
+        type: string
+      properties:
+        type: object
+      createdAt:
+        type: string
+        format: date-time
+      required:
+        type: array
+        items:
+          type: string
+      icon:
+        type: string
+      parentId:
+        type: string
+      datasetTemplateId:
+        type: integer
+        format: int32
+        #x-scala-type: com.blackfynn.modelschema.model.DatasetTemplateId
+
+  TemplateSchemaRelationship:
+    type: object
+    required:
+      - id
+      - name
+      - displayName
+      - description
+      - datasetTemplateId
+      - createdAt
+    properties:
+      id:
+        type: integer
+        format: int32
+        #x-scala-type: com.blackfynn.modelschema.model.SchemaRelationshipId
+      name:
+        type: string
+      displayName:
+        type: string
+      description:
+        type: string
+      from:
+        type: string
+        #x-scala-type: com.blackfynn.modelschema.model.SchemaId
+      to:
+        type: string
+        #x-scala-type: com.blackfynn.modelschema.model.SchemaId
+      datasetTemplateId:
+        type: integer
+        format: int32
+      createdAt:
+        type: string
+        format: date-time
+
+  TemplateSchemaLinkedProperty:
+    type: object
+    required:
+      - id
+      - name
+      - displayName
+      - position
+      - from
+      - to
+      - datasetTemplateId
+      - createdAt
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+      displayName:
+        type: string
+      position:
+        type: long
+      from:
+        type: string
+        #x-scala-type: com.blackfynn.modelschema.model.SchemaId
+      to:
+        type: string
+        #x-scala-type: com.blackfynn.modelschema.model.SchemaId
+      datasetTemplateId:
+        type: integer
+        format: int32
+      createdAt:
+        type: string
+        format: date-time
+
+  CreateSchemaRequest:
+    type: object
+    required:
+      - $schema
+      - name
+      - description
+      - properties
+      - required
+    properties:
+      $schema:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      category:
+        type: string
+      properties:
+        type: object
+      required:
+        type: array
+        items:
+          type: string
+      icon:
+        type: string
+
+  DatasetTemplateUpdateRequest:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+
+  DatasetTemplateCreateRequest:
+    type: object
+    required:
+      - name
+      - description
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+
+  DatasetCreateRequest:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+
+  SchemaPropertyResponses:
+    type: array
+    items:
+      $ref: '#/definitions/SchemaPropertyResponse'
+
+  SchemaPropertyResponse:
+    type: object
+    required:
+      - id
+      - name
+      - displayName
+      - dataType
+      - index
+      - locked
+      - default
+      - conceptTitle
+      - description
+      - required
+      - createdAt
+      - updatedAt
+    properties:
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+      displayName:
+        type: string
+      description:
+        type: string
+      dataType:
+        oneOf:
+          - type: string
+          - type: object
+      index:
+        type: integer
+        format: int32
+      locked:
+        type: boolean
+      default:
+        type: boolean
+      conceptTitle:
+        type: boolean
+      required:
+        type: boolean
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time

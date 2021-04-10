@@ -1,0 +1,46 @@
+{
+  "$schema": "http://schema.pennsieve.net/model/draft-01/schema",
+  "name": "Sedation Information",
+  "description": "This model provides information about the sedation procedure",
+  "category": "None",
+  "properties": {
+    "Sedation Source": {
+      "type": "string",
+      "description": "The Sedation Source"
+    },
+    "Sedation Vehicle": {
+      "type": "string",
+      "description": "The Sedation Vehicle"
+    },
+    "Sedation Administration Route": {
+      "type": "string",
+      "description": "The administration route of the sedation",
+      "enum": [
+        "ip",
+        "iv",
+        "im",
+        "sc",
+        "inh",
+        "oral",
+        "topical",
+        "other"
+      ]
+    },
+    "Sedation Frequency": {
+      "type": "string",
+      "description": "The frequency of the sedation"
+    },
+    "Sedation Start Time": {
+      "description": "The start time of the sedation",
+      "type": "string"
+    },
+    "Sedation Stop Time": {
+      "description": "The stop time of the sedation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "Sedation Source",
+    "Sedation Vehicle"
+  ]
+}

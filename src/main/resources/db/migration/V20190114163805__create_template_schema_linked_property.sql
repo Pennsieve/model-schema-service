@@ -1,0 +1,9 @@
+CREATE TABLE template_schema_linked_property(
+  id SERIAL NOT NULL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  display_name VARCHAR(255) NOT NULL,
+  position INTEGER NOT NULL,
+  from_id VARCHAR(255) NOT NULL REFERENCES template_schema(id) ON DELETE CASCADE,
+  to_id VARCHAR(255) NOT NULL REFERENCES template_schema(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)

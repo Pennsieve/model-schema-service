@@ -1,0 +1,57 @@
+{
+  "$schema": "http://schema.pennsieve.net/model/draft-01/schema",
+  "name": "Acquisition",
+  "description": "A representation of an acquisition of data by a recording device",
+  "category": "Acquisition",
+  "properties": {
+    "Acquisition Type": {
+      "type": "string",
+      "description": "The type of acquisition"
+    },
+    "Recording Type": {
+      "type": "string",
+      "description": "The type of recording"
+    },
+    "Description and characteristics of sensor": {
+      "type": "string",
+      "description": "Describe the sensor and provide information on its characteristics"
+    },
+    "Spatial information sensor": {
+      "type": "string",
+      "description": "Describe the spatial location of sensor and how it is affixed to biological target"
+    },
+    "A/D conversion (sampling rate, dynamic range, any signal processing)": {
+      "type": "string",
+      "description": "Describe A/D conversion (sampling rate, dynamic range, any signal processing)"
+    },
+    "Calibration - start/stop time": {
+      "type": "string",
+      "description": "Indicate the start and stop time of the calibration process"
+    },
+    "Setting for detection - pinhole/gain, offset, scan mode, temporal sampling": {
+      "type": "string",
+      "description": "Describe the settings for detection in an optical recording."
+    },
+    "Size of scanned field and resolution of sampling": {
+      "type": "string",
+      "description": "Describe the size of the scanned field and resolution of sampling in an optical recording."
+    },
+    "Characteristics of pre-amplifier and amplifiers (gain, filter setting)": {
+      "type": "string",
+      "description": "Describe the characteristics of the pre-amplifier and amplifiers (gain, filter settings)"
+    },
+    "Timing control": {
+      "type": "string",
+      "description": "Describe the timing control for multiple recording systems/stimulation/recording/imaging etc."
+    },
+    "Hardware based data processing (ﬁltering/smoothing/binning/ etc.)": {
+      "type": "string",
+      "description": "Describe hardware based data processing (ﬁltering/smoothing/binning/ etc.)"
+    },
+    "Software environment (operating system/acquisition program version and supplier/etc.)": {
+      "type": "string",
+      "description": "Describe software environment (operating system/acquisition program version and supplier/etc.)"
+    }
+  },
+  "required": []
+}

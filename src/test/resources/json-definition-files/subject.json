@@ -1,0 +1,58 @@
+{
+  "$id": "",
+  "$schema": "http://schema.pennsieve.net/model/draft-01/schema",
+  "name": "Sample Subject",
+  "description": "Sample subject model.",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Please provide a name for the subject."
+    },
+    "age": {
+      "type": "number",
+      "description": "Please provide an age for the subject."
+    },
+    "description": {
+      "type": "string",
+      "description": "Please provide any additional information about the subject."
+    },
+    "sex": {
+      "type": "string",
+      "description": "Please provide the sex of the subject.",
+      "enum": [
+        "male",
+        "female",
+        "unknown",
+        "other"
+      ]
+    },
+    "species": {
+      "type": "string",
+      "description": "please specifiy the species of the subject.",
+      "enum": [
+        "human",
+        "cat",
+        "dog",
+        "fish",
+        "bird",
+        "mouse",
+        "rat",
+        "sheep",
+        "rabbits",
+        "chimpanzee",
+        "monkey",
+        "pig",
+        "other"
+      ]
+    },
+    "weight": {
+      "type": "number",
+      "description": "Please provide the weight of the subject."
+    }
+  },
+  "required": [
+    "name",
+    "sex",
+    "species"
+  ]
+}

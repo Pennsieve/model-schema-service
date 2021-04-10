@@ -1,0 +1,249 @@
+{
+  "$schema": "http://schema.pennsieve.net/model/draft-01/schema",
+  "name": "Specimen",
+  "description": "A representation of a specimen (human, animal, or tissue sample)",
+  "category": "Specimen",
+  "properties": {
+    "Gender": {
+      "type": "string",
+      "description": "Gender of the specimen",
+      "enum": [
+        "M",
+        "F"
+      ]
+    },
+    "Age": {
+      "type": "string",
+      "description": "The age of the specimen"
+    },
+    "Developmental stage": {
+      "type": "string",
+      "description": "Developmental stage of the specimen"
+    },
+    "Body Mass Index": {
+      "type": "string",
+      "description": "Body mass index"
+    },
+    "Clinical/disease information": {
+      "type": "string",
+      "description": "Describe clinical and disease information"
+    },
+    "Drug Information": {
+      "type": "string",
+      "description": "Describe drug information"
+    },
+    "Family history": {
+      "type": "string",
+      "description": "Describe family history"
+    },
+    "Time point on circadian clock": {
+      "type": "string",
+      "description": "Time point on circadian clock"
+    },
+    "Time point on oestrous cycle": {
+      "type": "string",
+      "description": "Time point on oestrous cycle"
+    },
+    "Concious, sedated or anesthetized": {
+      "type": "string",
+      "description": "Concious, sedated or anesthetized",
+      "enum": [
+        "N/A",
+        "Concious",
+        "sedated",
+        "anesthetized"
+      ]
+    },
+    "Sedation Dose": {
+      "type": "string",
+      "description": "Sedation Dose"
+    },
+    "Sedation Source": {
+      "type": "string",
+      "description": "Sedation Source"
+    },
+    "Sedation Vehicle": {
+      "type": "string",
+      "description": "Sedation Vehicle"
+    },
+    "Sedation Administration Route": {
+      "type": "string",
+      "description": "Sedation Administration Route",
+      "enum": [
+        "N/A",
+        "ip",
+        "iv",
+        "im",
+        "sc",
+        "inh",
+        "oral",
+        "topical",
+        "other"
+      ]
+    },
+    "Sedation Frequency": {
+      "type": "string",
+      "description": "Sedation Frequency"
+    },
+    "Sedation Start Time": {
+      "type": "string",
+      "description": "Sedation Start Time"
+    },
+    "Sedation Stop Time": {
+      "type": "string",
+      "description": "Sedation Stop Time"
+    },
+    "Anesthesia Dose": {
+      "type": "string",
+      "description": "Anesthesia Dose"
+    },
+    "Anesthesia Source": {
+      "type": "string",
+      "description": "Anesthesia Source"
+    },
+    "Anesthesia Vehicle": {
+      "type": "string",
+      "description": "Anesthesia Vehicle"
+    },
+    "Anesthesia Administration Route": {
+      "type": "string",
+      "description": "Anesthesia Administration Route",
+      "enum": [
+        "N/A",
+        "ip",
+        "iv",
+        "im",
+        "sc",
+        "inh",
+        "oral",
+        "topical",
+        "other"
+      ]
+    },
+    "Anesthesia Frequency": {
+      "type": "string",
+      "description": "Anesthesia Frequency"
+    },
+    "Anesthesia Start Time": {
+      "type": "string",
+      "description": "Anesthesia Start Time"
+    },
+    "Anesthesia Stop Time": {
+      "type": "string",
+      "description": "Anesthesia Stop Time"
+    },
+    "Open Cavity Procedure": {
+      "type": "string",
+      "description": "Was this an open cavity procedure?",
+      "enum": [
+        "Y",
+        "N"
+      ]
+    },
+    "Chronic Intervention": {
+      "type": "string",
+      "description": "Was this a chronic Intervention",
+      "enum": [
+        "Y",
+        "N"
+      ]
+    },
+    "Intervention History": {
+      "type": "string",
+      "description": "What was the intervention history?"
+    },
+    "Weight": {
+      "type": "string",
+      "description": "Weight"
+    },
+    "genus/species/strain": {
+      "type": "string",
+      "description": "Genus/species/strain"
+    },
+    "Supplier": {
+      "type": "string",
+      "description": "Supplier"
+    },
+    "Genetic variation (type/means)": {
+      "type": "string",
+      "description": "Genetic variation (type/means)"
+    },
+    "Disease model/state": {
+      "type": "string",
+      "description": "Disease model/state"
+    },
+    "Husbandry": {
+      "type": "string",
+      "description": "Husbandry (diet/housing type/environmental enrichment; day/night cycle)"
+    },
+    "Method of euthanasia": {
+      "type": "string",
+      "description": "Method of euthanasia"
+    },
+    "Cellular and acellular composition": {
+      "type": "string",
+      "description": "Cellular and acellular composition"
+    },
+    "Growth Time": {
+      "type": "string",
+      "description": "Growth Time"
+    },
+    "Growth Temperature": {
+      "type": "string",
+      "description": "Growth temperature"
+    },
+    "Growth media": {
+      "type": "string",
+      "description": "Growth media"
+    },
+    "Growth substrate": {
+      "type": "string",
+      "description": "Growth substrate"
+    },
+    "Bioreactor": {
+      "type": "string",
+      "description": "Bioreactor"
+    },
+    "Growth supplements": {
+      "type": "string",
+      "description": "Growth supplements"
+    },
+    "Growth Stimulation (electrical/mechanical)": {
+      "type": "string",
+      "description": "Growth Stimulation (electrical/mechanical)"
+    },
+    "Cell selection process for recording": {
+      "type": "string",
+      "description": "Cell selection process for recording"
+    },
+    "Cell line": {
+      "type": "string",
+      "description": "Cell line"
+    },
+    "Origin of Sample": {
+      "type": "string",
+      "description": "Origin of Sample"
+    },
+    "Passage (number/conditions/density)": {
+      "type": "string",
+      "description": "Passage (number/conditions/density)"
+    },
+    "Anatomical origin of sample": {
+      "type": "string",
+      "description": "Anatomical origin of sample, mapped to species/organ specific scaffolding"
+    },
+    "Perfusion protocol for organ; isolated tissue or isolated cell": {
+      "type": "string",
+      "description": "Perfusion protocol for organ; isolated tissue or isolated cell"
+    },
+    "Isolation procedure for organ; isolated tissue or isolated cell": {
+      "type": "string",
+      "description": "Isolation procedure for organ; isolated tissue or isolated cell"
+    },
+    "Indices used for assessment of viability for organ, isolated tissue or isolated cell": {
+      "type": "string",
+      "description": "Indices used for assessment of viability for organ, isolated tissue or isolated cell"
+    }
+  },
+  "required": []
+}

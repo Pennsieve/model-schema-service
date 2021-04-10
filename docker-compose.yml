@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  model-schema:
+    image: pennsieve/model-schema-service:latest
+    ports:
+      - 8080:8080
+    environment:
+      - ENVIRONMENT=local
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - API_SERVICE_URL=https://dev-api-use1.pennsieve.net
+      - MODEL_SERVICE_URL=https://dev-concepts-service-use1.dev.pennsieve.net
+      - JWT_SECRET_KEY=testkey
+      - SCHEMA_POSTGRES_HOST=postgres
+      - SCHEMA_POSTGRES_USER=postgres
+      - SCHEMA_POSTGRES_PASSWORD=password
+      - BIOPORTAL_API_KEY=${BIOPORTAL_API_KEY}
+      - BIOPORTAL_RATE_LIMIT=15
+      - BIOPORTAL_HOST=data.bioontology.org
+      - PREFIX_URL=http://0.0.0.0/model-schema
+    depends_on:
+      - postgres
+  postgres:
+    hostname: postgres
+    image: postgres:9.5.10
+    environment:
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 5432

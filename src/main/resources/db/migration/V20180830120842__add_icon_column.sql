@@ -1,0 +1,1 @@
+ALTER TABLE template_schema ADD COLUMN icon VARCHAR(255)

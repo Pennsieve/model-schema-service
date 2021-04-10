@@ -1,0 +1,29 @@
+{
+  "$schema": "http://schema.pennsieve.net/model/draft-01/schema",
+  "name": "Intervention",
+  "description": "This model defines an intervention",
+  "category": "Protocol",
+  "properties": {
+    "Event or stressor description": {
+      "type": "string",
+      "description": "Description of Event or stressor"
+    },
+    "Start time": {
+      "type": "string",
+      "description": "Start time of the intervention"
+    },
+    "Stop time": {
+      "type": "string",
+      "description": "Stop time of the intervention"
+    },
+    "Minimum washout or recovery time": {
+      "type": "string",
+      "description": "Description of Minimum washout or recovery time"
+    }
+  },
+  "required": [
+    "Event or stressor description",
+    "Start time",
+    "Stop time"
+  ]
+}

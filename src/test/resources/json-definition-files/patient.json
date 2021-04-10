@@ -1,0 +1,84 @@
+{
+  "$id": "http://schema.pennsieve.net/template/examples/531ec7e5-2539-4378-bdd6-5f23b89ef499",
+  "$schema": "http://schema.blackfynn.net/model/draft-01/schema",
+  "name": "Patient",
+  "description": "This is an example template describing a patient",
+  "category": "Person",
+  "properties": {
+    "Sex": {
+      "type": "string",
+      "description": "The sex of the person",
+      "enum": [
+        "Male",
+        "Female",
+        "Unknown"
+      ]
+    },
+    "Gender": {
+      "type": "string",
+      "description": "Gender of the person",
+      "default": "Unknown"
+    },
+    "Date of Birth": {
+      "type": "string",
+      "format": "date",
+      "description": "The date of birth of the person"
+    },
+    "Developmental stage": {
+      "type": "string",
+      "enum": [
+        "infant (0-1)",
+        "Toddler (2-3)",
+        "Preschooler (3-6)",
+        "School-age-child (7-12)",
+        "Adolescent (12-18)",
+        "Young adult (20-45)",
+        "Middle aged adult (30-65)",
+        "Old adult (50+)"
+      ],
+      "description": "The develpomental stage of the person"
+    },
+    "Body mass index": {
+      "type": "number",
+      "description": "The Body Mass Index of the person"
+    },
+    "Diagnosis": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "branches": [
+          {
+            "source": "BIOPORTAL",
+            "acronym": "SNOMEDCT",
+            "uri": "http://purl.bioontology.org/ontology/DIAGONT/113343008",
+            "name": "diseases",
+            "maxDepth": 0
+          }
+        ]
+      },
+      "description": "Diagnosis of disease of person"
+    },
+    "Drug information": {
+      "type": "string",
+      "description": "Specify which drugs the person is taking",
+      "branches": [
+        {
+          "source": "BIOPORTAL",
+          "acronym": "SNOMEDCT",
+          "uri": "http://purl.bioontology.org/ontology/SNOMEDCT/113343008",
+          "name": "Body organ structure",
+          "maxDepth": 4
+        }
+      ]
+    },
+    "Family history": {
+      "description": "Description of family history",
+      "type": "string"
+    }
+  },
+  "required": [
+    "Sex",
+    "Date of Birth",
+    "Diagnosis"
+  ]
+}
