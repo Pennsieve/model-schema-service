@@ -1,6 +1,6 @@
 lazy val akkaHttpVersion = "10.1.11"
 lazy val akkaVersion     = "2.6.5"
-lazy val authMiddlewareVersion = "4.2.2"
+lazy val authMiddlewareVersion = "5.2.0"
 lazy val catsVersion     = "1.1.0"
 lazy val circeVersion    = "0.9.3"
 lazy val shapelessVersion = "2.3.3"
