@@ -14,7 +14,7 @@ lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
       organization    := "com.blackfynn.modelschema",
-      scalaVersion    := "2.12.6"
+      scalaVersion    := "2.12.17"
     )),
     name := "model-schema-service",
     // https://tpolecat.github.io/2017/04/25/scalac-flags.html
