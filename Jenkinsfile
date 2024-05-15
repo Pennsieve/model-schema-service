@@ -38,7 +38,7 @@ node('executor') {
     sh "docker push pennsieve/model-schema-service:$imageTag"
   }
 
-  if (["master"].contains(env.BRANCH_NAME)) {
+  if (["main"].contains(env.BRANCH_NAME)) {
     stage('Deploy') {
       build job: "service-deploy/pennsieve-non-prod/us-east-1/dev-vpc-use1/dev/model-schema-service",
       parameters: [
